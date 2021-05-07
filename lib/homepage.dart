@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_website/about_view.dart';
+import 'package:portfolio_website/bottom_bar.dart';
 import 'package:portfolio_website/content_view.dart';
 import 'package:portfolio_website/custom_tab.dart';
 import 'package:portfolio_website/custom_tab_bar.dart';
-
+import 'package:portfolio_website/home_view.dart';
+import 'package:portfolio_website/projects_view.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,18 +25,15 @@ class _HomePageState extends State<HomePage>
   List<ContentView> contentViews = [
     ContentView(
       tab: CustomTab(title: 'Home'),
-      content: Center(
-          child: Container(color: Colors.green, width: 100, height: 100)),
+      content: HomeView(),
     ),
     ContentView(
       tab: CustomTab(title: 'About'),
-      content:
-      Center(child: Container(color: Colors.blue, width: 100, height: 100)),
+      content: AboutView(),
     ),
     ContentView(
       tab: CustomTab(title: 'Projects'),
-      content:
-      Center(child: Container(color: Colors.red, width: 100, height: 100)),
+      content: ProjectsView(),
     )
   ];
 
@@ -52,20 +52,22 @@ class _HomePageState extends State<HomePage>
             controller: tabController,
             tabs: contentViews.map((e) => e.tab).toList()),
         Container(
-          height: screenHeight * 0.85,
+          height: screenHeight * 0.8,
           child: TabBarView(
             controller: tabController,
             children: contentViews.map((e) => e.content).toList(),
             physics: NeverScrollableScrollPhysics(),
           ),
-        )
+        ),
+        BottomBar()
       ],
     );
   }
 
   Widget mobileView() {
     return Padding(
-      padding: EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05),
+      padding:
+          EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05),
       child: Container(
         width: screenWidth,
         child: Column(
@@ -76,7 +78,12 @@ class _HomePageState extends State<HomePage>
                 iconSize: screenWidth * 0.08,
                 icon: Icon(Icons.menu_rounded),
                 color: Colors.white,
-                onPressed: () => scaffoldKey.currentState.openEndDrawer())
+                onPressed: () => scaffoldKey.currentState.openEndDrawer()),
+            Expanded(
+                child: ListView.builder(
+                    itemCount: contentViews.length,
+                    itemBuilder: (context, index) =>
+                        contentViews[index].content))
           ],
         ),
       ),
@@ -89,11 +96,11 @@ class _HomePageState extends State<HomePage>
         children: [Container(height: screenHeight * 0.1)] +
             contentViews
                 .map((e) => Container(
-              child: ListTile(
-                title: Text(e.tab.title),
-                onTap: () {},
-              ),
-            ))
+                      child: ListTile(
+                        title: Text(e.tab.title),
+                        onTap: () {},
+                      ),
+                    ))
                 .toList(),
       ),
     );
