@@ -10,6 +10,9 @@ class ProjectsView extends StatefulWidget {
 class _ProjectsViewState extends State<ProjectsView> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      height: 1000,
+      color: Colors.blue,
+    );
   }
 }

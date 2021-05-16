@@ -10,6 +10,9 @@ class AboutView extends StatefulWidget {
 class _AboutViewState extends State<AboutView> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      height: 1000,
+      color: Colors.red,
+    );
   }
 }

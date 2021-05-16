@@ -6,6 +6,7 @@ import 'package:portfolio_website/custom_tab.dart';
 import 'package:portfolio_website/custom_tab_bar.dart';
 import 'package:portfolio_website/home_view.dart';
 import 'package:portfolio_website/projects_view.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  ItemScrollController itemScrollController;
   TabController tabController;
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -41,6 +43,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
     super.initState();
     tabController = TabController(length: contentViews.length, vsync: this);
+    itemScrollController = ItemScrollController();
   }
 
   Widget desktopView() {
@@ -80,7 +83,8 @@ class _HomePageState extends State<HomePage>
                 color: Colors.white,
                 onPressed: () => scaffoldKey.currentState.openEndDrawer()),
             Expanded(
-                child: ListView.builder(
+                child: ScrollablePositionedList.builder(
+                    itemScrollController: itemScrollController,
                     itemCount: contentViews.length,
                     itemBuilder: (context, index) =>
                         contentViews[index].content))
@@ -98,7 +102,12 @@ class _HomePageState extends State<HomePage>
                 .map((e) => Container(
                       child: ListTile(
                         title: Text(e.tab.title),
-                        onTap: () {},
+                        onTap: () {
+                          itemScrollController.scrollTo(
+                              index: contentViews.indexOf(e),
+                              duration: Duration(milliseconds: 300));
+                          Navigator.pop(context);
+                        },
                       ),
                     ))
                 .toList(),
