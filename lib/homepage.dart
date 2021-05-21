@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:portfolio_website/about_view.dart';
-import 'package:portfolio_website/bottom_bar.dart';
-import 'package:portfolio_website/content_view.dart';
-import 'package:portfolio_website/custom_tab.dart';
-import 'package:portfolio_website/custom_tab_bar.dart';
-import 'package:portfolio_website/home_view.dart';
-import 'package:portfolio_website/projects_view.dart';
+import 'package:portfolio_website/utils/tab_controller_handler.dart';
+import 'package:portfolio_website/utils/view_wrapper.dart';
+import 'package:portfolio_website/views/about_view.dart';
+import 'package:portfolio_website/widgets/bottom_bar.dart';
+import 'package:portfolio_website/utils/content_view.dart';
+import 'package:portfolio_website/widgets/custom_tab.dart';
+import 'package:portfolio_website/views/home_view.dart';
+import 'package:portfolio_website/views/projects_view.dart';
+import 'package:portfolio_website/widgets/custom_tab_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,8 +18,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+
   ItemScrollController itemScrollController;
   TabController tabController;
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   double screenHeight;
@@ -46,9 +51,26 @@ class _HomePageState extends State<HomePage>
     itemScrollController = ItemScrollController();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    topPadding = screenHeight * 0.05;
+    bottomPadding = screenHeight * 0.01;
+
+    return Scaffold(
+      backgroundColor: Color(0xff1e1e24),
+      key: scaffoldKey,
+      endDrawer: drawer(),
+      body: Padding(
+        padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
+        child: ViewWrapper(desktopView: desktopView(), mobileView: mobileView()),
+      ),
+    );
+  }
+
   Widget desktopView() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CustomTabBar(
@@ -56,10 +78,13 @@ class _HomePageState extends State<HomePage>
             tabs: contentViews.map((e) => e.tab).toList()),
         Container(
           height: screenHeight * 0.8,
-          child: TabBarView(
-            controller: tabController,
-            children: contentViews.map((e) => e.content).toList(),
-            physics: NeverScrollableScrollPhysics(),
+          child: TabControllerHandler(
+            tabController: tabController,
+            child: TabBarView(
+              controller: tabController,
+              children: contentViews.map((e) => e.content).toList(),
+              physics: AlwaysScrollableScrollPhysics(),
+            ),
           ),
         ),
         BottomBar()
@@ -68,14 +93,11 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget mobileView() {
-    return Padding(
-      padding:
-          EdgeInsets.only(left: screenWidth * 0.05, right: screenWidth * 0.05),
-      child: Container(
+    return  Container(
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
         width: screenWidth,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconButton(
                 iconSize: screenWidth * 0.08,
@@ -90,7 +112,6 @@ class _HomePageState extends State<HomePage>
                         contentViews[index].content))
           ],
         ),
-      ),
     );
   }
 
@@ -115,28 +136,5 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-    topPadding = screenHeight * 0.05;
-    bottomPadding = screenHeight * 0.01;
 
-    print(screenWidth);
-    return Scaffold(
-      backgroundColor: Color(0xff1e1e24),
-      key: scaffoldKey,
-      endDrawer: drawer(),
-      body: Padding(
-        padding: EdgeInsets.only(top: topPadding, bottom: bottomPadding),
-        child: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > 715) {
-            return desktopView();
-          } else {
-            return mobileView();
-          }
-        }),
-      ),
-    );
-  }
 }

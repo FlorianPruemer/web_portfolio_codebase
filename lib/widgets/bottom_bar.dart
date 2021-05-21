@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:portfolio_website/custom_icon_button.dart';
+import 'package:portfolio_website/widgets/custom_icon_button.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({Key key}) : super(key: key);
@@ -11,13 +11,11 @@ class BottomBar extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     return Column(
       children: [
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 2,
-            width: screenWidth * 0.9,
-            color: Colors.white,
-          ),
+        Divider(
+          color: Colors.white,
+          thickness: 2,
+          indent: screenWidth*0.05,
+          endIndent: screenWidth*0.05,
         ),
         Container(
           height: screenHeight * 0.05,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_website/utils/view_wrapper.dart';
+import 'package:portfolio_website/widgets/navigation_arrow.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
@@ -15,39 +18,37 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > 715) {
-        return desktopView();
-      } else {
-        return mobileView();
-      }
-    });
+    return ViewWrapper(desktopView: desktopView(), mobileView: mobileView());
   }
 
   Widget desktopView() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
       children: [
-        Container(
-          width: screenWidth * 0.45,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(getFontSize(true)),
-              SizedBox(height: screenHeight * 0.05),
-              subHeader('Computer Scientist', getFontSize(false)),
-              SizedBox(height: screenHeight * 0.01),
-              subHeader('App Developer',getFontSize(false)),
-              SizedBox(height: screenHeight * 0.01),
-              subHeader('Flutter Enthusiast',getFontSize(false)),
-              SizedBox(height: screenHeight * 0.1),
-            ],
-          ),
+        NavigationArrow(isBackArrow: false),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: screenWidth * 0.45,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  header(getFontSize(true)),
+                  SizedBox(height: screenHeight * 0.05),
+                  subHeader('Computer Scientist', getFontSize(false)),
+                  SizedBox(height: screenHeight * 0.01),
+                  subHeader('App Developer',getFontSize(false)),
+                  SizedBox(height: screenHeight * 0.01),
+                  subHeader('Flutter Enthusiast',getFontSize(false)),
+                  SizedBox(height: screenHeight * 0.1),
+                ],
+              ),
+            ),
+            SizedBox(width: screenWidth * 0.03),
+            picture()
+          ],
         ),
-        SizedBox(width: screenWidth * 0.03),
-        picture()
       ],
     );
   }
