@@ -9,13 +9,12 @@ class BulletPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           String.fromCharCode(0x2022),
-          style: TextStyle(color: Color(0xff21a179), fontSize: ThemeSelector.selectBodyText(context).fontSize),
+          style: TextStyle(color: Color(0xff21a179), fontSize:  ThemeSelector.selectBodyText(context).fontSize),
         ),
         SizedBox(width: MediaQuery.of(context).size.width * 0.01),
         Flexible(
@@ -27,3 +26,4 @@ class BulletPoint extends StatelessWidget {
     );
   }
 }
+

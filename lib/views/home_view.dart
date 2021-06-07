@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_website/utils/theme_selector.dart';
 import 'package:portfolio_website/utils/view_wrapper.dart';
 import 'package:portfolio_website/widgets/navigation_arrow.dart';
 
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key key}) : super(key: key);
-
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -16,8 +15,9 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
+
     return ViewWrapper(desktopView: desktopView(), mobileView: mobileView());
   }
 
@@ -27,6 +27,7 @@ class _HomeViewState extends State<HomeView> {
         NavigationArrow(isBackArrow: false),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: screenWidth * 0.45,
@@ -36,19 +37,19 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   header(getFontSize(true)),
                   SizedBox(height: screenHeight * 0.05),
-                  subHeader('Computer Scientist', getFontSize(false)),
+                  subHeader('Computer Scientist.', getFontSize(false)),
                   SizedBox(height: screenHeight * 0.01),
-                  subHeader('App Developer',getFontSize(false)),
+                  subHeader('App Developer.', getFontSize(false)),
                   SizedBox(height: screenHeight * 0.01),
-                  subHeader('Flutter Enthusiast',getFontSize(false)),
+                  subHeader('Flutter Enthusiast.', getFontSize(false)),
                   SizedBox(height: screenHeight * 0.1),
                 ],
               ),
             ),
             SizedBox(width: screenWidth * 0.03),
-            picture()
+            profilePicture()
           ],
-        ),
+        )
       ],
     );
   }
@@ -56,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
   Widget mobileView() {
     return Column(
       children: [
-        picture(),
+        profilePicture(),
         SizedBox(height: screenHeight * 0.02),
         header(30),
         SizedBox(height: screenHeight * 0.01),
@@ -82,30 +83,12 @@ class _HomeViewState extends State<HomeView> {
     return isHeader ? fontSize * 2.25 : fontSize;
   }
 
-  Widget header(double fontSize) {
-    return RichText(
-        text: TextSpan(
-            style: TextStyle(color: Colors.white, fontSize: fontSize, fontFamily: 'DMSerifDisplay'),
-            children: <TextSpan>[
-          TextSpan(text: 'Hi, my name is '),
-          TextSpan(text: 'Florian', style: TextStyle(color: Color(0xff21a179))),
-          TextSpan(text: '!')
-        ]));
-  }
-
-  Widget subHeader(String text, double fontSize) {
-    return Text(
-      text,
-      style: TextStyle(color: Colors.grey[500], fontSize: fontSize),
-    );
-  }
-
-  Widget picture() {
+  Widget profilePicture() {
     return Container(
       height: getImageSize(),
       width: getImageSize(),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(getImageSize()/2),
+        borderRadius: BorderRadius.circular(getImageSize() / 2),
         child: Image.asset(
           'assets/picture.png',
           fit: BoxFit.cover,
@@ -113,4 +96,24 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+  Widget header(double fontSize) {
+    return RichText(
+      text: TextSpan(
+        // Note: Styles for TextSpans must be explicitly defined.
+        // Child text spans will inherit styles from parent
+        style: ThemeSelector.selectHeadline(context),
+        children: <TextSpan>[
+          TextSpan(text: 'Hi, my name is '),
+          TextSpan(text: 'Florian', style: TextStyle(color: Color(0xff21a179))),
+          TextSpan(text: '!'),
+        ],
+      ),
+    );
+  }
+
+  Widget subHeader(String text, double fontSize) {
+    return Text(text, style: ThemeSelector.selectSubHeadline(context));
+  }
 }
+

@@ -15,8 +15,9 @@ class CustomTabBar extends StatelessWidget {
         : screenWidth > 1100
         ? 0.3
         : 0.4;
-    return Container(
-        padding: EdgeInsets.only(right: screenWidth * 0.05),
+    return Padding(
+      padding: EdgeInsets.only(right: screenWidth * 0.05),
+      child: Container(
         width: screenWidth * tabBarScaling,
         child: Theme(
           data: ThemeData(
@@ -30,6 +31,8 @@ class CustomTabBar extends StatelessWidget {
             tabs: tabs,
           ),
         ),
+      ),
     );
   }
 }
+

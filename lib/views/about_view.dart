@@ -27,6 +27,42 @@ class _AboutViewState extends State<AboutView> {
     );
   }
 
+  Widget desktopView() {
+    return Stack(
+      children: [
+        NavigationArrow(isBackArrow: false),
+        NavigationArrow(isBackArrow: true),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            infoSection(),
+            SizedBox(width: screenWidth * 0.1),
+            BulletList(
+                strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
+                width: screenWidth * 0.35,
+                spacing: 0.05)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget mobileView() {
+    return Column(
+      children: [
+        SizedBox(height: screenHeight * 0.05),
+        infoText(),
+        SizedBox(height: screenHeight * 0.05),
+        BulletList(
+          strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
+          width: screenWidth,
+          spacing: 0.01,
+        )
+      ],
+    );
+  }
+
   Widget infoSection() {
     return Container(
       width: screenWidth * 0.35,
@@ -70,41 +106,6 @@ class _AboutViewState extends State<AboutView> {
       'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
       overflow: TextOverflow.clip,
       style: ThemeSelector.selectBodyText(context),
-    );
-  }
-
-  Widget desktopView() {
-    return Stack(
-      children: [
-        NavigationArrow(isBackArrow: true),
-        NavigationArrow(isBackArrow: false),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            infoSection(),
-            SizedBox(width: screenWidth * 0.1),
-            BulletList(
-                strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
-                width: screenWidth * 0.35,
-                spacing: 0.05)
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget mobileView() {
-    return Column(
-      children: [
-        SizedBox(height: screenHeight * 0.05),
-        infoText(),
-        SizedBox(height: screenHeight * 0.05),
-        BulletList(
-          strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
-          width: screenWidth,
-          spacing: 0.01,
-        )
-      ],
     );
   }
 }
