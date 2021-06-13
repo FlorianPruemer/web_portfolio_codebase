@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio_website/utils/theme_selector.dart';
 import 'package:portfolio_website/utils/view_wrapper.dart';
 import 'package:portfolio_website/widgets/bullet_list.dart';
-import 'package:portfolio_website/utils/theme_selector.dart';
 import 'package:portfolio_website/widgets/navigation_arrow.dart';
 
 class AboutView extends StatefulWidget {
@@ -11,7 +11,8 @@ class AboutView extends StatefulWidget {
   _AboutViewState createState() => _AboutViewState();
 }
 
-class _AboutViewState extends State<AboutView> {
+class _AboutViewState extends State<AboutView>
+    with SingleTickerProviderStateMixin {
   double screenWidth;
   double screenHeight;
   String loremIpsum =
@@ -36,12 +37,15 @@ class _AboutViewState extends State<AboutView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            infoSection(),
-            SizedBox(width: screenWidth * 0.1),
-            BulletList(
-                strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
-                width: screenWidth * 0.35,
-                spacing: 0.05)
+            Spacer(flex: 1),
+            Expanded(flex: 3, child: infoSection()),
+            Spacer(flex: 1),
+            Expanded(
+                flex: 3,
+                child: BulletList(
+                  strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
+                )),
+            Spacer(flex: 1),
           ],
         )
       ],
@@ -54,11 +58,12 @@ class _AboutViewState extends State<AboutView> {
         SizedBox(height: screenHeight * 0.05),
         infoText(),
         SizedBox(height: screenHeight * 0.05),
-        BulletList(
-          strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
-          width: screenWidth,
-          spacing: 0.01,
-        )
+        Container(
+          height: screenHeight * 0.3,
+          child: BulletList(
+            strings: [loremIpsum, loremIpsum, loremIpsum, loremIpsum],
+          ),
+        ),
       ],
     );
   }
