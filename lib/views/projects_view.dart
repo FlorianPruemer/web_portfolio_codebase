@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio_website/utils/project_model.dart';
+import 'package:portfolio_website/utils/theme_selector.dart';
 import 'package:portfolio_website/utils/view_wrapper.dart';
 import 'package:portfolio_website/widgets/navigation_arrow.dart';
+import 'package:portfolio_website/widgets/project_entry.dart';
 import 'package:portfolio_website/widgets/project_image.dart';
 
 class ProjectsView extends StatefulWidget {
@@ -14,6 +16,7 @@ class ProjectsView extends StatefulWidget {
 class _ProjectsViewState extends State<ProjectsView> {
   double screenWidth;
   double screenHeight;
+  int selectedIndex = 0;
   List<Project> projects = [
     Project(
         title: 'Project 1',
@@ -32,14 +35,13 @@ class _ProjectsViewState extends State<ProjectsView> {
             'Frac suàvitate mœdus férrî. La nourtiotre, à errœr près ne mils facîlis terme melîore de Je vidërèr port hir qûém né le aliments maison cùm èrrœr neç, démortene prodessêt, reur Pier alîenum êst. Ùt le taçimatés pro ceptes numquam men suble in comple de fenêtre pertinax. Nat insolens nommence. Éi ad nail appèterê èûm des mœdêratius quîdam. Id plâcèràt bands et dicunt diàm à per àd. Naient eà n’onvectioncroprésainte se at rèferrëntûr an erant cial. Fiancois nô omnèsqûe peur èos témpor d’un phaedrûm voin împedit de pro in œptiôn Aliqùid es. Et vîdé nam dèle ullùm es nours l’émon vis,')
   ];
 
-
-/*  @override
+  @override
   void didChangeDependencies() {
     precacheImage(AssetImage('project1.jpg'), context);
     precacheImage(AssetImage('project2.jpg'), context);
     precacheImage(AssetImage('project3.jpg'), context);
     super.didChangeDependencies();
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,9 @@ class _ProjectsViewState extends State<ProjectsView> {
     List<Widget> images =
         List.generate((projects.length * 1.5).ceil(), (index) {
       if (index.isEven) {
-        return ProjectImage(project: projects[index ~/ 2], onPressed: () {});
+        return ProjectImage(
+            project: projects[index ~/ 2],
+            onPressed: () => updateIndex(index ~/ 2));
       } else {
         return SizedBox(height: space);
       }
@@ -74,7 +78,31 @@ class _ProjectsViewState extends State<ProjectsView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: images,
-                )
+                ),
+                SizedBox(width: space),
+                Container(
+                  height: screenHeight * 0.2 * 2 + space * 2,
+                  child: Stack(
+                    children: [
+                      AnimatedAlign(
+                        alignment: selectedIndex == 0
+                            ? Alignment.topCenter
+                            : selectedIndex == 1
+                                ? Alignment.center
+                                : Alignment.bottomCenter,
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.fastOutSlowIn,
+                        child: Container(
+                          color: Colors.white,
+                          width: screenWidth * 0.05,
+                          height: 3,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(width: space),
+                Expanded(child: ProjectEntry(project: projects[selectedIndex]))
               ],
             ))
       ],
@@ -82,8 +110,40 @@ class _ProjectsViewState extends State<ProjectsView> {
   }
 
   Widget mobileView() {
-    return Column(
-      children: [],
-    );
+    List<Widget> projectList = List.generate(projects.length, (index) {
+      return Column(
+        children: [
+          Text(
+            projects[index].title,
+            style: ThemeSelector.selectSubHeadline(context),
+          ),
+          SizedBox(height: screenHeight * 0.01),
+          Container(
+            height: screenHeight * 0.1,
+            width: screenWidth,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                projects[index].imageURL,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(height: screenHeight * 0.01),
+          Text(
+            projects[index].description,
+            style: ThemeSelector.selectBodyText(context),
+          ),
+          SizedBox(height: screenHeight * 0.1),
+        ],
+      );
+    });
+    return Column(children: projectList);
+  }
+
+  void updateIndex(int newIndex) {
+    setState(() {
+      selectedIndex = newIndex;
+    });
   }
 }
